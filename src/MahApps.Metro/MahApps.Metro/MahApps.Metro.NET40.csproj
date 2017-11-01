@@ -19,12 +19,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)\bin\$(AssemblyName)\DebugNET40\</OutputPath>
+    <OutputPath>bin\NET40\</OutputPath>
     <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>$(SolutionDir)\bin\$(AssemblyName)\DebugNET40\MahApps.Metro.XML</DocumentationFile>
+    <DocumentationFile>bin\NET40\MahApps.Metro.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
