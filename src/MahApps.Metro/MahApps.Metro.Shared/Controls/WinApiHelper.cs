@@ -2,6 +2,7 @@
 namespace MahApps.Metro.Controls
 {
     using System;
+    using System.Windows;
     using ControlzEx.Standard;
 
     public static class WinApiHelper
@@ -12,13 +13,20 @@ namespace MahApps.Metro.Controls
         /// <param name="hWnd">The handle for this method.</param>
         public static System.Windows.Point GetRelativeMousePosition(IntPtr hWnd)
         {
-            if (hWnd == IntPtr.Zero)
+            try
             {
-                return new System.Windows.Point();
+                if (hWnd == IntPtr.Zero)
+                {
+                    return new System.Windows.Point();
+                }
+                var point = WinApiHelper.GetPhysicalCursorPos();
+                NativeMethods.ScreenToClient(hWnd, ref point);
+                return new System.Windows.Point(point.X, point.Y);
             }
-            var point = WinApiHelper.GetPhysicalCursorPos();
-            NativeMethods.ScreenToClient(hWnd, ref point);
-            return new System.Windows.Point(point.X, point.Y);
+            catch
+            {
+                return new Point();
+            }
         }
 
         /// <summary>
@@ -27,18 +35,21 @@ namespace MahApps.Metro.Controls
         /// <param name="hWnd">The handle for this method.</param>
         public static bool TryGetRelativeMousePosition(IntPtr hWnd, out System.Windows.Point point)
         {
-            POINT pt = new POINT();
-            var returnValue = hWnd != IntPtr.Zero && NativeMethods.TryGetPhysicalCursorPos(out pt);
-            if (returnValue)
+
+            try
             {
-                NativeMethods.ScreenToClient(hWnd, ref pt);
-                point = new System.Windows.Point(pt.X, pt.Y);
+                point = new Point
+                {
+                    X = System.Windows.Forms.Cursor.Position.X,
+                    Y = System.Windows.Forms.Cursor.Position.Y
+                };
+                return true;
             }
-            else
+            catch
             {
-                point = new System.Windows.Point();
+                point = new Point();
+                return false;
             }
-            return returnValue;
         }
 
         internal static POINT GetPhysicalCursorPos()
@@ -52,7 +63,8 @@ namespace MahApps.Metro.Controls
             }
             catch (Exception exception)
             {
-                throw new MahAppsException("Uups, this should not happen! Sorry for this exception! Is this maybe happend on a virtual machine or via remote desktop? Please let us know, thx.", exception);
+                return new POINT();
+                //throw new MahAppsException("Uups, this should not happen! Sorry for this exception! Is this maybe happend on a virtual machine or via remote desktop? Please let us know, thx.", exception);
             }
         }
     }

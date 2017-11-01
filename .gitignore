@@ -254,3 +254,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+# Cake - Uncomment if you are using it
+**/tools/**
+!**/tools/packages.config
+!**/tools/format_all_xaml.cmd
+!tools/XamlStyler/**/*.*
